@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background">
+        <img src="./assets/images/5818333.webp" alt="Pokedex Hintergrund" class="background">
+    </div>
+    <div class="logo">
+        <img src="./assets/images/logo.png" alt="Pokedex Logo">
+    </div>
+    <button class="microphone" id="microphone-button">
+        <img src="./assets/images/microphone.png" alt="Mikrofon">
+    </button>
+    <div class="sidebar" id="sidebar">
+        <!-- Links werden dynamisch hinzugefügt -->
+    </div>
+
+    <div id="pokemon-detail">
+        <img id="pokemon-image" src="" alt="Pokémon Bild">
+        <p id="pokemon-description"></p>
+    </div>
+
+    <script>
+        // Funktion zum Vorlesen des Textes mit natürlicherer Stimme
+        function speakText(text) {
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'de-DE'; // Sprache auf Deutsch setzen
+
+            // Wartezeit, um sicherzustellen, dass Stimmen geladen sind
+            setTimeout(() => {
+                const voices = window.speechSynthesis.getVoices();
+                const preferredVoice = voices.find(voice => voice.lang === 'de-DE' && voice.name.includes('Microsoft')) || 
+                                       voices.find(voice => voice.lang === 'de-DE' && voice.name.includes('Google'));
+
+                if (preferredVoice) {
+                    speech.voice = preferredVoice;
+                }
+
+                window.speechSynthesis.speak(speech);
+            }, 500);
+        }
+
+        // Stimmen müssen manchmal erst geladen werden
+        window.speechSynthesis.onvoiceschanged = () => speakText('');
+
+        // Pokémon-Daten laden und verarbeiten
+        fetch('./assets/data/pokemonData.json')
+            .then(response => response.json())
+            .then(data => {
+                const sidebar = document.getElementById('sidebar');
+                const pokemonData = {};
+
+                data.forEach(pokemon => {
+                    pokemonData[pokemon.name] = pokemon;
+
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'pokemon-link';
+                    link.dataset.pokemon = pokemon.name;
+                    link.innerHTML = `<img src="${pokemon.image}" alt="">`;
+                    sidebar.appendChild(link);
+                });
+
+                // Event-Listener für die Sidebar-Links
+                document.querySelectorAll('.pokemon-link').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        // Verhindert das Standardverhalten des Links (Seitenwechsel)
+                        event.preventDefault();
+                        
+                        // Holen des Pokémon-Namens aus dem "data-pokemon"-Attribut
+                        const pokemonName = event.currentTarget.getAttribute('data-pokemon');
+                        
+                        // Holen der Bild-URL und Beschreibung aus dem pokemonData-Objekt
+                        const pokemon = pokemonData[pokemonName];
+
+                        // Setzen des Bildes und der Beschreibung im Detailbereich
+                        document.getElementById('pokemon-image').src = pokemon.image;
+                        document.getElementById('pokemon-description').textContent = pokemon.description;
+
+                        // Abspielen des Pokémon-Sounds
+                        const audio = new Audio(pokemon.sound);
+                        audio.play();
+
+                        // Vorlesen der Pokémon-Beschreibung nach 2 Sekunden
+                        setTimeout(() => {
+                            speakText(pokemon.description);
+                        }, 2000);
+                    });
+                });
+
+                // Sprachsuche-Funktionalität
+                const microphoneButton = document.getElementById('microphone-button');
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'de-DE';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                microphoneButton.addEventListener('click', () => {
+                    recognition.start();
+                });
+
+                recognition.addEventListener('result', (event) => {
+                    const spokenText = event.results[0][0].transcript;
+                    const pokemonName = Object.keys(pokemonData).find(name => name.toLowerCase() === spokenText.toLowerCase());
+
+                    if (pokemonName) {
+                        const pokemon = pokemonData[pokemonName];
+
+                        // Setzen des Bildes und der Beschreibung im Detailbereich
+                        document.getElementById('pokemon-image').src = pokemon.image;
+                        document.getElementById('pokemon-description').textContent = pokemon.description;
+
+                        // Abspielen des Pokémon-Sounds
+                        const audio = new Audio(pokemon.sound);
+                        audio.play();
+
+                        // Vorlesen der Pokémon-Beschreibung nach 2 Sekunden
+                        setTimeout(() => {
+                            speakText(pokemon.description);
+                        }, 2000);
+                    } else {
+                        speakText('Pokémon nicht gefunden. Bitte versuchen Sie es erneut.');
+                    }
+                });
+
+                recognition.addEventListener('error', (event) => {
+                    speakText('Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.');
+                });
+            })
+            .catch(error => console.error('Fehler beim Laden der Pokémon-Daten:', error));
+    </script>
+</body>
+</html>

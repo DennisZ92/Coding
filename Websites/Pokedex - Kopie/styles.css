@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f4f4f4;
+}
+p{
+    display:none;
+}
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+}
+.background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.logo {
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.logo img {
+    max-width: 60%;
+    min-width: 300px;
+    height: auto;
+}
+.microphone {
+    position: fixed;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index:1;
+}
+.microphone img {
+    width: 50px;
+}
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  padding: 10px;
+  background-color: rgb(73, 191, 250);
+  overflow-y: scroll;
+  position:fixed;
+  right: 0;
+  top: 0;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  margin-bottom: 5px;
+  background-color: #2b8cec;
+  border-radius: 50px 10px 10px 50px;
+}
+
+.sidebar a img {
+  margin-right: 10px;
+  image-rendering: pixelated;
+}
+
+.sidebar a:hover {
+  background-color: rgb(13, 89, 169);
+  color: white;
+}
+
+#pokemon-detail {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1;
+}
+#pokemon-image {
+    width: 300px;
+    margin-bottom: 20px;
+    image-rendering: pixelated;
+}
+@media (max-width: 768px) {
+.sidebar {
+    width: 100%;
+    height: 35vh;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    border: #f4f4f4;
+    border-radius: 4% 4% 0% 0%;
+}
+
+.sidebar a {
+    margin: 0;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.sidebar a img {
+    margin-right: 0;
+    margin-bottom: 5px;
+}
+
+body {
+    overflow-y: auto;
+}
+.background{
+    top: -110px;
+}
+#pokemon-detail {
+    top: 40%;
+}
+}

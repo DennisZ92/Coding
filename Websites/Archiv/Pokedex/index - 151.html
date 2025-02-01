@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #f4f4f4;
+    }
+    p{
+        display:none;
+    }
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: -1;
+    }
+    .background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .logo {
+        position: absolute;
+        top: 1%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+    .logo img {
+        max-width: 60%;
+        min-width: 400px;
+        height: auto;
+    }
+    .sidebar {
+      width: 200px;
+      height: 100vh;
+      padding: 10px;
+      background-color: rgb(73, 191, 250);
+      overflow-y: scroll;
+      position:fixed;
+      right: 0;
+      top: 0;
+    }
+    
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      margin-bottom: 5px;
+      background-color: #2b8cec;
+      border-radius: 50px 10px 10px 50px;
+    }
+    
+    .sidebar a img {
+      margin-right: 10px;
+    }
+    
+    .sidebar a:hover {
+      background-color: rgb(13, 89, 169);
+      color: white;
+      padding: 20px;
+    }
+
+    #pokemon-detail {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        z-index: 1;
+    }
+    #pokemon-image {
+        width: 250px;
+        margin-bottom: 20px;
+        image-rendering: pixelated;
+    }
+    @media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: 32vh; /* Set a fixed height for the sidebar */
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 3fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+        background-color: rgb(73, 191, 250); /* Ensure background color is set */
+        overflow-y: auto; /* Allow scrolling if content overflows */
+    }
+
+    .sidebar a {
+        margin: 0;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .sidebar a img {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    body {
+        overflow-y: auto; /* Allow body to scroll */
+    }
+}
+  </style>
+</head>
+<body>
+    <div class="background">
+        <img src="./assets/images/5818333.webp" alt="Pokedex Hintergrund" class="background">
+    </div>
+    <div class="logo">
+        <img src="./assets/images/logo.png" alt="Pokedex Logo">
+    </div>
+    <div class="sidebar">
+        <a href="#" class="pokemon-link" data-pokemon="Bisasam"><img src="./assets/sprites/1.png" alt=""> Bisasam</a>
+        <a href="#" class="pokemon-link" data-pokemon="Bisaknosp"><img src="./assets/sprites/2.png" alt=""> Bisaknosp</a>
+        <a href="#" class="pokemon-link" data-pokemon="Bisaflor"><img src="./assets/sprites/3.png" alt=""> Bisaflor</a>
+        <a href="#" class="pokemon-link" data-pokemon="Glumanda"><img src="./assets/sprites/4.png" alt=""> Glumanda</a>
+        <a href="#" class="pokemon-link" data-pokemon="Glutexo"><img src="./assets/sprites/5.png" alt=""> Glutexo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Glurak"><img src="./assets/sprites/6.png" alt=""> Glurak</a>
+        <a href="#" class="pokemon-link" data-pokemon="Schiggy"><img src="./assets/sprites/7.png" alt=""> Schiggy</a>
+        <a href="#" class="pokemon-link" data-pokemon="Schillok"><img src="./assets/sprites/8.png" alt=""> Schillok</a>
+        <a href="#" class="pokemon-link" data-pokemon="Turtok"><img src="./assets/sprites/9.png" alt=""> Turtok</a>
+        <a href="#" class="pokemon-link" data-pokemon="Raupy"><img src="./assets/sprites/10.png" alt=""> Raupy</a>
+        <a href="#" class="pokemon-link" data-pokemon="Safcon"><img src="./assets/sprites/11.png" alt=""> Safcon</a>
+        <a href="#" class="pokemon-link" data-pokemon="Smettbo"><img src="./assets/sprites/12.png" alt=""> Smettbo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Hornliu"><img src="./assets/sprites/13.png" alt=""> Hornliu</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kokuna"><img src="./assets/sprites/14.png" alt=""> Kokuna</a>
+        <a href="#" class="pokemon-link" data-pokemon="Bibor"><img src="./assets/sprites/15.png" alt=""> Bibor</a>
+        <a href="#" class="pokemon-link" data-pokemon="Taubsi"><img src="./assets/sprites/16.png" alt=""> Taubsi</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tauboga"><img src="./assets/sprites/17.png" alt=""> Tauboga</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tauboss"><img src="./assets/sprites/18.png" alt=""> Tauboss</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rattfratz"><img src="./assets/sprites/19.png" alt=""> Rattfratz</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rattikarl"><img src="./assets/sprites/20.png" alt=""> Rattikarl</a>
+        <a href="#" class="pokemon-link" data-pokemon="Habitak"><img src="./assets/sprites/21.png" alt=""> Habitak</a>
+        <a href="#" class="pokemon-link" data-pokemon="Ibitak"><img src="./assets/sprites/22.png" alt=""> Ibitak</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rettan"><img src="./assets/sprites/23.png" alt=""> Rettan</a>
+        <a href="#" class="pokemon-link" data-pokemon="Arbok"><img src="./assets/sprites/24.png" alt=""> Arbok</a>
+        <a href="#" class="pokemon-link" data-pokemon="Pikachu"><img src="./assets/sprites/25.png" alt=""> Pikachu</a>
+        <a href="#" class="pokemon-link" data-pokemon="Raichu"><img src="./assets/sprites/26.png" alt=""> Raichu</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sandan"><img src="./assets/sprites/27.png" alt=""> Sandan</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sandamer"><img src="./assets/sprites/28.png" alt=""> Sandamer</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nidoran♀"><img src="./assets/sprites/29.png" alt=""> Nidoran♀</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nidorina"><img src="./assets/sprites/30.png" alt=""> Nidorina</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nidoqueen"><img src="./assets/sprites/31.png" alt=""> Nidoqueen</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nidoran♂"><img src="./assets/sprites/32.png" alt=""> Nidoran♂</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nidorino"><img src="./assets/sprites/33.png" alt=""> Nidorino</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nidoking"><img src="./assets/sprites/34.png" alt=""> Nidoking</a>
+        <a href="#" class="pokemon-link" data-pokemon="Piepi"><img src="./assets/sprites/35.png" alt=""> Piepi</a>
+        <a href="#" class="pokemon-link" data-pokemon="Pixi"><img src="./assets/sprites/36.png" alt=""> Pixi</a>
+        <a href="#" class="pokemon-link" data-pokemon="Vulpix"><img src="./assets/sprites/37.png" alt=""> Vulpix</a>
+        <a href="#" class="pokemon-link" data-pokemon="Vulnona"><img src="./assets/sprites/38.png" alt=""> Vulnona</a>
+        <a href="#" class="pokemon-link" data-pokemon="Pummeluff"><img src="./assets/sprites/39.png" alt=""> Pummeluff</a>
+        <a href="#" class="pokemon-link" data-pokemon="Knuddeluff"><img src="./assets/sprites/40.png" alt=""> Knuddeluff</a>
+        <a href="#" class="pokemon-link" data-pokemon="Zubat"><img src="./assets/sprites/41.png" alt=""> Zubat</a>
+        <a href="#" class="pokemon-link" data-pokemon="Golbat"><img src="./assets/sprites/42.png" alt=""> Golbat</a>
+        <a href="#" class="pokemon-link" data-pokemon="Myrapla"><img src="./assets/sprites/43.png" alt=""> Myrapla</a>
+        <a href="#" class="pokemon-link" data-pokemon="Duflor"><img src="./assets/sprites/44.png" alt=""> Duflor</a>
+        <a href="#" class="pokemon-link" data-pokemon="Giflor"><img src="./assets/sprites/45.png" alt=""> Giflor</a>
+        <a href="#" class="pokemon-link" data-pokemon="Paras"><img src="./assets/sprites/46.png" alt=""> Paras</a>
+        <a href="#" class="pokemon-link" data-pokemon="Parasek"><img src="./assets/sprites/47.png" alt=""> Parasek</a>
+        <a href="#" class="pokemon-link" data-pokemon="Bluzuk"><img src="./assets/sprites/48.png" alt=""> Bluzuk</a>
+        <a href="#" class="pokemon-link" data-pokemon="Omot"><img src="./assets/sprites/49.png" alt=""> Omot</a>
+        <a href="#" class="pokemon-link" data-pokemon="Digda"><img src="./assets/sprites/50.png" alt=""> Digda</a>
+        <a href="#" class="pokemon-link" data-pokemon="Digdri"><img src="./assets/sprites/51.png" alt=""> Digdri</a>
+        <a href="#" class="pokemon-link" data-pokemon="Mauzi"><img src="./assets/sprites/52.png" alt=""> Mauzi</a>
+        <a href="#" class="pokemon-link" data-pokemon="Snobilikat"><img src="./assets/sprites/53.png" alt=""> Snobilikat</a>
+        <a href="#" class="pokemon-link" data-pokemon="Enton"><img src="./assets/sprites/54.png" alt=""> Enton</a>
+        <a href="#" class="pokemon-link" data-pokemon="Entoron"><img src="./assets/sprites/55.png" alt=""> Entoron</a>
+        <a href="#" class="pokemon-link" data-pokemon="Menki"><img src="./assets/sprites/56.png" alt=""> Menki</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rasaff"><img src="./assets/sprites/57.png" alt=""> Rasaff</a>
+        <a href="#" class="pokemon-link" data-pokemon="Fukano"><img src="./assets/sprites/58.png" alt=""> Fukano</a>
+        <a href="#" class="pokemon-link" data-pokemon="Arkani"><img src="./assets/sprites/59.png" alt=""> Arkani</a>
+        <a href="#" class="pokemon-link" data-pokemon="Quapsel"><img src="./assets/sprites/60.png" alt=""> Quapsel</a>
+        <a href="#" class="pokemon-link" data-pokemon="Quaputzi"><img src="./assets/sprites/61.png" alt=""> Quaputzi</a>
+        <a href="#" class="pokemon-link" data-pokemon="Quappo"><img src="./assets/sprites/62.png" alt=""> Quappo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Abra"><img src="./assets/sprites/63.png" alt=""> Abra</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kadabra"><img src="./assets/sprites/64.png" alt=""> Kadabra</a>
+        <a href="#" class="pokemon-link" data-pokemon="Simsala"><img src="./assets/sprites/65.png" alt=""> Simsala</a>
+        <a href="#" class="pokemon-link" data-pokemon="Machollo"><img src="./assets/sprites/66.png" alt=""> Machollo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Maschock"><img src="./assets/sprites/67.png" alt=""> Maschock</a>
+        <a href="#" class="pokemon-link" data-pokemon="Machomei"><img src="./assets/sprites/68.png" alt=""> Machomei</a>
+        <a href="#" class="pokemon-link" data-pokemon="Knofensa"><img src="./assets/sprites/69.png" alt=""> Knofensa</a>
+        <a href="#" class="pokemon-link" data-pokemon="Ultrigaria"><img src="./assets/sprites/70.png" alt=""> Ultrigaria</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sarzenia"><img src="./assets/sprites/71.png" alt=""> Sarzenia</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tentacha"><img src="./assets/sprites/72.png" alt=""> Tentacha</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tentoxa"><img src="./assets/sprites/73.png" alt=""> Tentoxa</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kleinstein"><img src="./assets/sprites/74.png" alt=""> Kleinstein</a>
+        <a href="#" class="pokemon-link" data-pokemon="Georok"><img src="./assets/sprites/75.png" alt=""> Georok</a>
+        <a href="#" class="pokemon-link" data-pokemon="Geowaz"><img src="./assets/sprites/76.png" alt=""> Geowaz</a>
+        <a href="#" class="pokemon-link" data-pokemon="Ponita"><img src="./assets/sprites/77.png" alt=""> Ponita</a>
+        <a href="#" class="pokemon-link" data-pokemon="Gallopa"><img src="./assets/sprites/78.png" alt=""> Gallopa</a>
+        <a href="#" class="pokemon-link" data-pokemon="Flegmon"><img src="./assets/sprites/79.png" alt=""> Flegmon</a>
+        <a href="#" class="pokemon-link" data-pokemon="Lahmus"><img src="./assets/sprites/80.png" alt=""> Lahmus</a>
+        <a href="#" class="pokemon-link" data-pokemon="Magnetilo"><img src="./assets/sprites/81.png" alt=""> Magnetilo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Magneton"><img src="./assets/sprites/82.png" alt=""> Magneton</a>
+        <a href="#" class="pokemon-link" data-pokemon="Porenta'"><img src="./assets/sprites/83.png" alt=""> Porenta'</a>
+        <a href="#" class="pokemon-link" data-pokemon="Dodu"><img src="./assets/sprites/84.png" alt=""> Dodu</a>
+        <a href="#" class="pokemon-link" data-pokemon="Dodri"><img src="./assets/sprites/85.png" alt=""> Dodri</a>
+        <a href="#" class="pokemon-link" data-pokemon="Jurob"><img src="./assets/sprites/86.png" alt=""> Jurob</a>
+        <a href="#" class="pokemon-link" data-pokemon="Jugong"><img src="./assets/sprites/87.png" alt=""> Jugong</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sleima"><img src="./assets/sprites/88.png" alt=""> Sleima</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sleimok"><img src="./assets/sprites/89.png" alt=""> Sleimok</a>
+        <a href="#" class="pokemon-link" data-pokemon="Muschas"><img src="./assets/sprites/90.png" alt=""> Muschas</a>
+        <a href="#" class="pokemon-link" data-pokemon="Austos"><img src="./assets/sprites/91.png" alt=""> Austos</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nebulak"><img src="./assets/sprites/92.png" alt=""> Nebulak</a>
+        <a href="#" class="pokemon-link" data-pokemon="Alpollo"><img src="./assets/sprites/93.png" alt=""> Alpollo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Gengar"><img src="./assets/sprites/94.png" alt=""> Gengar</a>
+        <a href="#" class="pokemon-link" data-pokemon="Onix"><img src="./assets/sprites/95.png" alt=""> Onix</a>
+        <a href="#" class="pokemon-link" data-pokemon="Traumato"><img src="./assets/sprites/96.png" alt=""> Traumato</a>
+        <a href="#" class="pokemon-link" data-pokemon="Hypno"><img src="./assets/sprites/97.png" alt=""> Hypno</a>
+        <a href="#" class="pokemon-link" data-pokemon="Krabby"><img src="./assets/sprites/98.png" alt=""> Krabby</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kingler"><img src="./assets/sprites/99.png" alt=""> Kingler</a>
+        <a href="#" class="pokemon-link" data-pokemon="Voltobal"><img src="./assets/sprites/100.png" alt=""> Voltobal</a>
+        <a href="#" class="pokemon-link" data-pokemon="Lektrobal"><img src="./assets/sprites/101.png" alt=""> Lektrobal</a>
+        <a href="#" class="pokemon-link" data-pokemon="Owei"><img src="./assets/sprites/102.png" alt=""> Owei</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kokowei"><img src="./assets/sprites/103.png" alt=""> Kokowei</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tragosso"><img src="./assets/sprites/104.png" alt=""> Tragosso</a>
+        <a href="#" class="pokemon-link" data-pokemon="Knogga"><img src="./assets/sprites/105.png" alt=""> Knogga</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kicklee"><img src="./assets/sprites/106.png" alt=""> Kicklee</a>
+        <a href="#" class="pokemon-link" data-pokemon="Nockchan"><img src="./assets/sprites/107.png" alt=""> Nockchan</a>
+        <a href="#" class="pokemon-link" data-pokemon="Schlurp"><img src="./assets/sprites/108.png" alt=""> Schlurp</a>
+        <a href="#" class="pokemon-link" data-pokemon="Smogon"><img src="./assets/sprites/109.png" alt=""> Smogon</a>
+        <a href="#" class="pokemon-link" data-pokemon="Smogmog"><img src="./assets/sprites/110.png" alt=""> Smogmog</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rihorn"><img src="./assets/sprites/111.png" alt=""> Rihorn</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rizeros"><img src="./assets/sprites/112.png" alt=""> Rizeros</a>
+        <a href="#" class="pokemon-link" data-pokemon="Chaneira"><img src="./assets/sprites/113.png" alt=""> Chaneira</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tangela"><img src="./assets/sprites/114.png" alt=""> Tangela</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kangama"><img src="./assets/sprites/115.png" alt=""> Kangama</a>
+        <a href="#" class="pokemon-link" data-pokemon="Seeper"><img src="./assets/sprites/116.png" alt=""> Seeper</a>
+        <a href="#" class="pokemon-link" data-pokemon="Seemon"><img src="./assets/sprites/117.png" alt=""> Seemon</a>
+        <a href="#" class="pokemon-link" data-pokemon="Goldini"><img src="./assets/sprites/118.png" alt=""> Goldini</a>
+        <a href="#" class="pokemon-link" data-pokemon="Golking"><img src="./assets/sprites/119.png" alt=""> Golking</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sterndu"><img src="./assets/sprites/120.png" alt=""> Sterndu</a>
+        <a href="#" class="pokemon-link" data-pokemon="Starmie"><img src="./assets/sprites/121.png" alt=""> Starmie</a>
+        <a href="#" class="pokemon-link" data-pokemon="Pantimos"><img src="./assets/sprites/122.png" alt=""> Pantimos</a>
+        <a href="#" class="pokemon-link" data-pokemon="Sichlor"><img src="./assets/sprites/123.png" alt=""> Sichlor</a>
+        <a href="#" class="pokemon-link" data-pokemon="Rossana"><img src="./assets/sprites/124.png" alt=""> Rossana</a>
+        <a href="#" class="pokemon-link" data-pokemon="Elektek"><img src="./assets/sprites/125.png" alt=""> Elektek</a>
+        <a href="#" class="pokemon-link" data-pokemon="Magmar"><img src="./assets/sprites/126.png" alt=""> Magmar</a>
+        <a href="#" class="pokemon-link" data-pokemon="Pinsir"><img src="./assets/sprites/127.png" alt=""> Pinsir</a>
+        <a href="#" class="pokemon-link" data-pokemon="Tauros"><img src="./assets/sprites/128.png" alt=""> Tauros</a>
+        <a href="#" class="pokemon-link" data-pokemon="Karpador"><img src="./assets/sprites/129.png" alt=""> Karpador</a>
+        <a href="#" class="pokemon-link" data-pokemon="Garados"><img src="./assets/sprites/130.png" alt=""> Garados</a>
+        <a href="#" class="pokemon-link" data-pokemon="Lapras"><img src="./assets/sprites/131.png" alt=""> Lapras</a>
+        <a href="#" class="pokemon-link" data-pokemon="Ditto"><img src="./assets/sprites/132.png" alt=""> Ditto</a>
+        <a href="#" class="pokemon-link" data-pokemon="Evoli"><img src="./assets/sprites/133.png" alt=""> Evoli</a>
+        <a href="#" class="pokemon-link" data-pokemon="Aquana"><img src="./assets/sprites/134.png" alt=""> Aquana</a>
+        <a href="#" class="pokemon-link" data-pokemon="Blitza"><img src="./assets/sprites/135.png" alt=""> Blitza</a>
+        <a href="#" class="pokemon-link" data-pokemon="Flamara"><img src="./assets/sprites/136.png" alt=""> Flamara</a>
+        <a href="#" class="pokemon-link" data-pokemon="Porygon"><img src="./assets/sprites/137.png" alt=""> Porygon</a>
+        <a href="#" class="pokemon-link" data-pokemon="Amonitas"><img src="./assets/sprites/138.png" alt=""> Amonitas</a>
+        <a href="#" class="pokemon-link" data-pokemon="Amoroso"><img src="./assets/sprites/139.png" alt=""> Amoroso</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kabuto"><img src="./assets/sprites/140.png" alt=""> Kabuto</a>
+        <a href="#" class="pokemon-link" data-pokemon="Kabutops"><img src="./assets/sprites/141.png" alt=""> Kabutops</a>
+        <a href="#" class="pokemon-link" data-pokemon="Aerodactyl"><img src="./assets/sprites/142.png" alt=""> Aerodactyl</a>
+        <a href="#" class="pokemon-link" data-pokemon="Relaxo"><img src="./assets/sprites/143.png" alt=""> Relaxo</a>
+        <a href="#" class="pokemon-link" data-pokemon="Arktos"><img src="./assets/sprites/144.png" alt=""> Arktos</a>
+        <a href="#" class="pokemon-link" data-pokemon="Zapdos"><img src="./assets/sprites/145.png" alt=""> Zapdos</a>
+        <a href="#" class="pokemon-link" data-pokemon="Lavados"><img src="./assets/sprites/146.png" alt=""> Lavados</a>
+        <a href="#" class="pokemon-link" data-pokemon="Dratini"><img src="./assets/sprites/147.png" alt=""> Dratini</a>
+        <a href="#" class="pokemon-link" data-pokemon="Dragonir"><img src="./assets/sprites/148.png" alt=""> Dragonir</a>
+        <a href="#" class="pokemon-link" data-pokemon="Dragoran"><img src="./assets/sprites/149.png" alt=""> Dragoran</a>
+        <a href="#" class="pokemon-link" data-pokemon="Mewtu"><img src="./assets/sprites/150.png" alt=""> Mewtu</a>
+        <a href="#" class="pokemon-link" data-pokemon="Mew"><img src="./assets/sprites/151.png" alt=""> Mew</a>
+    </div>
+
+    <div id="pokemon-detail">
+        <img id="pokemon-image" src="" alt="Pokémon Bild">
+        <p id="pokemon-description"></p>
+    </div>
+
+    <script>
+        // Pokémon-Daten für die ersten 151 Pokémon
+        const pokemonData = {
+        "Bisasam": {
+            image: "./assets/sprites/1.png",
+            sound: "./assets/cries/1.ogg",
+            description: "Bisasam ist ein Pflanzen- und Gift-Pokémon der ersten Generation. Es hat die Fähigkeit, Pflanzen durch den Saft in seinem Rücken zu wachsen."
+        },
+        "Bisaknosp": {
+            image: "./assets/sprites/2.png",
+            sound: "./assets/cries/2.ogg",
+            description: "Bisaknosp ist die Weiterentwicklung von Bisasam und entwickelt sich zu Bisaflor. Es hat bereits einen größeren Blütenansatz auf seinem Rücken."
+        },
+        "Bisaflor": {
+            image: "./assets/sprites/3.png",
+            sound: "./assets/cries/3.ogg",
+            description: "Bisaflor ist die letzte Entwicklungsstufe von Bisasam. Mit einem riesigen Pflanzenanteil auf seinem Rücken kann es starke Pflanzenangriffe ausführen."
+        },
+        "Glumanda": {
+            image: "./assets/sprites/4.png",
+            sound: "./assets/cries/4.ogg",
+            description: "Glumanda ist ein Feuer-Pokémon der ersten Generation. Es hat eine Flamme auf seinem Schwanz, die seine Lebenskraft anzeigt."
+        },
+        "Glutexo": {
+            image: "./assets/sprites/5.png",
+            sound: "./assets/cries/5.ogg",
+            description: "Glutexo ist die Weiterentwicklung von Glumanda. Es hat stärkere Feuerangriffe und eine größere Flamme auf seinem Schwanz."
+        },
+        "Glurak": {
+            image: "./assets/sprites/6.png",
+            sound: "./assets/cries/6.ogg",
+            description: "Glurak ist die letzte Entwicklungsstufe von Glumanda. Es kann fliegen und feuert mächtige Feuerangriffe aus seinem Maul."
+        },
+        "Schiggy": {
+            image: "./assets/sprites/7.png",
+            sound: "./assets/cries/7.ogg",
+            description: "Schiggy ist ein Wasser-Pokémon der ersten Generation. Es kann Wasser aus seinem Mund spritzen und hat eine harte Schale zum Schutz."
+        },
+        "Schillok": {
+            image: "./assets/sprites/8.png",
+            sound: "./assets/cries/8.ogg",
+            description: "Schillok ist die Weiterentwicklung von Schiggy. Es hat stärkere Wasserangriffe und eine größere Schale."
+        },
+        "Turtok": {
+            image: "./assets/sprites/9.png",
+            sound: "./assets/cries/9.ogg",
+            description: "Turtok ist die letzte Entwicklungsstufe von Schiggy. Es hat mächtige Wasserkanonen auf seinem Rücken, die es zum Angriff einsetzt."
+        },
+        "Raupy": {
+            image: "./assets/sprites/10.png",
+            sound: "./assets/cries/10.ogg",
+            description: "Raupy ist ein Käfer-Pokémon der ersten Generation. Es hat einen grünen Körper und eine rote Fühler."
+        },
+        "Safcon": {
+            image: "./assets/sprites/11.png",
+            sound: "./assets/cries/11.ogg",
+            description: "Safcon ist die Weiterentwicklung von Raupy. Es hat eine harte Schale, die es vor Angriffen schützt."
+        },
+        "Smettbo": {
+            image: "./assets/sprites/12.png",
+            sound: "./assets/cries/12.ogg",
+            description: "Smettbo ist die letzte Entwicklungsstufe von Raupy. Es kann Puder aus seinen Flügeln streuen, um Gegner zu verwirren."
+        },
+        "Hornliu": {
+            image: "./assets/sprites/13.png",
+            sound: "./assets/cries/13.ogg",
+            description: "Hornliu ist ein Käfer- und Gift-Pokémon der ersten Generation. Es hat einen stacheligen Körper und kann Giftstachel einsetzen."
+        },
+        "Kokuna": {
+            image: "./assets/sprites/14.png",
+            sound: "./assets/cries/14.ogg",
+            description: "Kokuna ist die Weiterentwicklung von Hornliu. Es hat eine harte Schale, die es vor Angriffen schützt."
+        },
+        "Bibor": {
+            image: "./assets/sprites/15.png",
+            sound: "./assets/cries/15.ogg",
+            description: "Bibor ist die letzte Entwicklungsstufe von Hornliu. Es hat große Stacheln an seinen Armen und kann Giftstachel einsetzen."
+        },
+        "Taubsi": {
+            image: "./assets/sprites/16.png",
+            sound: "./assets/cries/16.ogg",
+            description: "Taubsi ist ein Normal- und Flug-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Sandwirbel einsetzen."
+        },
+        "Tauboga": {
+            image: "./assets/sprites/17.png",
+            sound: "./assets/cries/17.ogg",
+            description: "Tauboga ist die Weiterentwicklung von Taubsi. Es hat größere Flügel und kann stärkere Flugangriffe einsetzen."
+        },
+        "Tauboss": {
+            image: "./assets/sprites/18.png",
+            sound: "./assets/cries/18.ogg",
+            description: "Tauboss ist die letzte Entwicklungsstufe von Taubsi. Es hat große Flügel und kann mächtige Flugangriffe einsetzen."
+        },
+        "Rattfratz": {
+            image: "./assets/sprites/19.png",
+            sound: "./assets/cries/19.ogg",
+            description: "Rattfratz ist ein Normal-Pokémon der ersten Generation. Es hat einen lila Körper und kann Tackle und Biss einsetzen."
+        },
+        "Rattikarl": {
+            image: "./assets/sprites/20.png",
+            sound: "./assets/cries/20.ogg",
+            description: "Rattikarl ist die Weiterentwicklung von Rattfratz. Es hat einen größeren Körper und kann stärkere Angriffe einsetzen."
+        },
+        "Habitak": {
+            image: "./assets/sprites/21.png",
+            sound: "./assets/cries/21.ogg",
+            description: "Habitak ist ein Normal- und Flug-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Schnabel und Flügelschlag einsetzen."
+        },
+        "Ibitak": {
+            image: "./assets/sprites/22.png",
+            sound: "./assets/cries/22.ogg",
+            description: "Ibitak ist die Weiterentwicklung von Habitak. Es hat größere Flügel und kann stärkere Flugangriffe einsetzen."
+        },
+        "Rettan": {
+            image: "./assets/sprites/23.png",
+            sound: "./assets/cries/23.ogg",
+            description: "Rettan ist ein Gift-Pokémon der ersten Generation. Es hat einen langen Körper und kann Wickel und Giftstachel einsetzen."
+        },
+        "Arbok": {
+            image: "./assets/sprites/24.png",
+            sound: "./assets/cries/24.ogg",
+            description: "Arbok ist die Weiterentwicklung von Rettan. Es hat einen größeren Körper und kann stärkere Giftangriffe einsetzen."
+        },
+        "Pikachu": {
+            image: "./assets/sprites/25.png",
+            sound: "./assets/cries/25.ogg",
+            description: "Pikachu ist ein Elektro-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Donnerblitz und Ruckzuckhieb einsetzen."
+        },
+        "Raichu": {
+            image: "./assets/sprites/26.png",
+            sound: "./assets/cries/26.ogg",
+            description: "Raichu ist die Weiterentwicklung von Pikachu. Es hat einen größeren Körper und kann stärkere Elektroangriffe einsetzen."
+        },
+        "Sandan": {
+            image: "./assets/sprites/27.png",
+            sound: "./assets/cries/27.ogg",
+            description: "Sandan ist ein Boden-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Kratzer und Sandwirbel einsetzen."
+        },
+        "Sandamer": {
+            image: "./assets/sprites/28.png",
+            sound: "./assets/cries/28.ogg",
+            description: "Sandamer ist die Weiterentwicklung von Sandan. Es hat einen größeren Körper und kann stärkere Bodenangriffe einsetzen."
+        },
+        "Nidoran♀": {
+            image: "./assets/sprites/29.png",
+            sound: "./assets/cries/29.ogg",
+            description: "Nidoran♀ ist ein Gift-Pokémon der ersten Generation. Es hat einen lila Körper und kann Kratzer und Giftstachel einsetzen."
+        },
+        "Nidorina": {
+            image: "./assets/sprites/30.png",
+            sound: "./assets/cries/30.ogg",
+            description: "Nidorina ist die Weiterentwicklung von Nidoran♀. Es hat einen größeren Körper und kann stärkere Giftangriffe einsetzen."
+        },
+        "Nidoqueen": {
+            image: "./assets/sprites/31.png",
+            sound: "./assets/cries/31.ogg",
+            description: "Nidoqueen ist die letzte Entwicklungsstufe von Nidoran♀. Es hat einen großen Körper und kann mächtige Gift- und Bodenangriffe einsetzen."
+        },
+        "Nidoran♂": {
+            image: "./assets/sprites/32.png",
+            sound: "./assets/cries/32.ogg",
+            description: "Nidoran♂ ist ein Gift-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Kratzer und Giftstachel einsetzen."
+        },
+        "Nidorino": {
+            image: "./assets/sprites/33.png",
+            sound: "./assets/cries/33.ogg",
+            description: "Nidorino ist die Weiterentwicklung von Nidoran♂. Es hat einen größeren Körper und kann stärkere Giftangriffe einsetzen."
+        },
+        "Nidoking": {
+            image: "./assets/sprites/34.png",
+            sound: "./assets/cries/34.ogg",
+            description: "Nidoking ist die letzte Entwicklungsstufe von Nidoran♂. Es hat einen großen Körper und kann mächtige Gift- und Bodenangriffe einsetzen."
+        },
+        "Piepi": {
+            image: "./assets/sprites/35.png",
+            sound: "./assets/cries/35.ogg",
+            description: "Piepi ist ein Fee-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Metronom und Mondgewalt einsetzen."
+        },
+        "Pixi": {
+            image: "./assets/sprites/36.png",
+            sound: "./assets/cries/36.ogg",
+            description: "Pixi ist die Weiterentwicklung von Piepi. Es hat einen größeren Körper und kann stärkere Feeangriffe einsetzen."
+        },
+        "Vulpix": {
+            image: "./assets/sprites/37.png",
+            sound: "./assets/cries/37.ogg",
+            description: "Vulpix ist ein Feuer-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Glut und Flammenwurf einsetzen."
+        },
+        "Vulnona": {
+            image: "./assets/sprites/38.png",
+            sound: "./assets/cries/38.ogg",
+            description: "Vulnona ist die Weiterentwicklung von Vulpix. Es hat einen größeren Körper und kann stärkere Feuerangriffe einsetzen."
+        },
+        "Pummeluff": {
+            image: "./assets/sprites/39.png",
+            sound: "./assets/cries/39.ogg",
+            description: "Pummeluff ist ein Normal- und Fee-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Gesang und Bodycheck einsetzen."
+        },
+        "Knuddeluff": {
+            image: "./assets/sprites/40.png",
+            sound: "./assets/cries/40.ogg",
+            description: "Knuddeluff ist die Weiterentwicklung von Pummeluff. Es hat einen größeren Körper und kann stärkere Normal- und Feeangriffe einsetzen."
+        },
+        "Zubat": {
+            image: "./assets/sprites/41.png",
+            sound: "./assets/cries/41.ogg",
+            description: "Zubat ist ein Gift- und Flug-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Biss und Flügelschlag einsetzen."
+        },
+        "Golbat": {
+            image: "./assets/sprites/42.png",
+            sound: "./assets/cries/42.ogg",
+            description: "Golbat ist die Weiterentwicklung von Zubat. Es hat einen größeren Körper und kann stärkere Gift- und Flugangriffe einsetzen."
+        },
+        "Myrapla": {
+            image: "./assets/sprites/43.png",
+            sound: "./assets/cries/43.ogg",
+            description: "Myrapla ist ein Pflanzen- und Gift-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Absorber und Giftpuder einsetzen."
+        },
+        "Duflor": {
+            image: "./assets/sprites/44.png",
+            sound: "./assets/cries/44.ogg",
+            description: "Duflor ist die Weiterentwicklung von Myrapla. Es hat einen größeren Körper und kann stärkere Pflanzen- und Giftangriffe einsetzen."
+        },
+        "Giflor": {
+            image: "./assets/sprites/45.png",
+            sound: "./assets/cries/45.ogg",
+            description: "Giflor ist die letzte Entwicklungsstufe von Myrapla. Es hat einen großen Körper und kann mächtige Pflanzen- und Giftangriffe einsetzen."
+        },
+        "Paras": {
+            image: "./assets/sprites/46.png",
+            sound: "./assets/cries/46.ogg",
+            description: "Paras ist ein Käfer- und Pflanzen-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Kratzer und Pilzspore einsetzen."
+        },
+        "Parasek": {
+            image: "./assets/sprites/47.png",
+            sound: "./assets/cries/47.ogg",
+            description: "Parasek ist die Weiterentwicklung von Paras. Es hat einen größeren Körper und kann stärkere Käfer- und Pflanzenangriffe einsetzen."
+        },
+        "Bluzuk": {
+            image: "./assets/sprites/48.png",
+            sound: "./assets/cries/48.ogg",
+            description: "Bluzuk ist ein Käfer- und Gift-Pokémon der ersten Generation. Es hat einen lila Körper und kann Tackle und Giftpuder einsetzen."
+        },
+        "Omot": {
+            image: "./assets/sprites/49.png",
+            sound: "./assets/cries/49.ogg",
+            description: "Omot ist die Weiterentwicklung von Bluzuk. Es hat einen größeren Körper und kann stärkere Käfer- und Giftangriffe einsetzen."
+        },
+        "Digda": {
+            image: "./assets/sprites/50.png",
+            sound: "./assets/cries/50.ogg",
+            description: "Digda ist ein Boden-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Kratzer und Schaufler einsetzen."
+        },
+        "Digdri": {
+            image: "./assets/sprites/51.png",
+            sound: "./assets/cries/51.ogg",
+            description: "Digdri ist die Weiterentwicklung von Digda. Es hat einen größeren Körper und kann stärkere Bodenangriffe einsetzen."
+        },
+        "Mauzi": {
+            image: "./assets/sprites/52.png",
+            sound: "./assets/cries/52.ogg",
+            description: "Mauzi ist ein Normal-Pokémon der ersten Generation. Es hat einen beigen Körper und kann Kratzer und Zahltag einsetzen."
+        },
+        "Snobilikat": {
+            image: "./assets/sprites/53.png",
+            sound: "./assets/cries/53.ogg",
+            description: "Snobilikat ist die Weiterentwicklung von Mauzi. Es hat einen größeren Körper und kann stärkere Normalangriffe einsetzen."
+        },
+        "Enton": {
+            image: "./assets/sprites/54.png",
+            sound: "./assets/cries/54.ogg",
+            description: "Enton ist ein Wasser-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Kratzer und Aquaknarre einsetzen."
+        },
+        "Entoron": {
+            image: "./assets/sprites/55.png",
+            sound: "./assets/cries/55.ogg",
+            description: "Entoron ist die Weiterentwicklung von Enton. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Menki": {
+            image: "./assets/sprites/56.png",
+            sound: "./assets/cries/56.ogg",
+            description: "Menki ist ein Kampf-Pokémon der ersten Generation. Es hat einen beigen Körper und kann Kratzer und Karatehieb einsetzen."
+        },
+        "Rasaff": {
+            image: "./assets/sprites/57.png",
+            sound: "./assets/cries/57.ogg",
+            description: "Rasaff ist die Weiterentwicklung von Menki. Es hat einen größeren Körper und kann stärkere Kampf-Angriffe einsetzen."
+        },
+        "Fukano": {
+            image: "./assets/sprites/58.png",
+            sound: "./assets/cries/58.ogg",
+            description: "Fukano ist ein Feuer-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Biss und Flammenwurf einsetzen."
+        },
+        "Arkani": {
+            image: "./assets/sprites/59.png",
+            sound: "./assets/cries/59.ogg",
+            description: "Arkani ist die Weiterentwicklung von Fukano. Es hat einen größeren Körper und kann stärkere Feuerangriffe einsetzen."
+        },
+        "Quapsel": {
+            image: "./assets/sprites/60.png",
+            sound: "./assets/cries/60.ogg",
+            description: "Quapsel ist ein Wasser-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Aquaknarre und Hypnose einsetzen."
+        },
+        "Quaputzi": {
+            image: "./assets/sprites/61.png",
+            sound: "./assets/cries/61.ogg",
+            description: "Quaputzi ist die Weiterentwicklung von Quapsel. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Quappo": {
+            image: "./assets/sprites/62.png",
+            sound: "./assets/cries/62.ogg",
+            description: "Quappo ist die letzte Entwicklungsstufe von Quapsel. Es hat einen großen Körper und kann mächtige Wasser- und Kampf-Angriffe einsetzen."
+        },
+        "Abra": {
+            image: "./assets/sprites/63.png",
+            sound: "./assets/cries/63.ogg",
+            description: "Abra ist ein Psycho-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Teleport einsetzen."
+        },
+        "Kadabra": {
+            image: "./assets/sprites/64.png",
+            sound: "./assets/cries/64.ogg",
+            description: "Kadabra ist die Weiterentwicklung von Abra. Es hat einen größeren Körper und kann stärkere Psycho-Angriffe einsetzen."
+        },
+        "Simsala": {
+            image: "./assets/sprites/65.png",
+            sound: "./assets/cries/65.ogg",
+            description: "Simsala ist die letzte Entwicklungsstufe von Abra. Es hat einen großen Körper und kann mächtige Psycho-Angriffe einsetzen."
+        },
+        "Machollo": {
+            image: "./assets/sprites/66.png",
+            sound: "./assets/cries/66.ogg",
+            description: "Machollo ist ein Kampf-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Karatehieb und Geowurf einsetzen."
+        },
+        "Maschock": {
+            image: "./assets/sprites/67.png",
+            sound: "./assets/cries/67.ogg",
+            description: "Maschock ist die Weiterentwicklung von Machollo. Es hat einen größeren Körper und kann stärkere Kampf-Angriffe einsetzen."
+        },
+        "Machomei": {
+            image: "./assets/sprites/68.png",
+            sound: "./assets/cries/68.ogg",
+            description: "Machomei ist die letzte Entwicklungsstufe von Machollo. Es hat einen großen Körper und kann mächtige Kampf-Angriffe einsetzen."
+        },
+        "Knofensa": {
+            image: "./assets/sprites/69.png",
+            sound: "./assets/cries/69.ogg",
+            description: "Knofensa ist ein Pflanzen- und Gift-Pokémon der ersten Generation. Es hat einen grünen Körper und kann Rankenhieb und Giftpuder einsetzen."
+        },
+        "Ultrigaria": {
+            image: "./assets/sprites/70.png",
+            sound: "./assets/cries/70.ogg",
+            description: "Ultrigaria ist die Weiterentwicklung von Knofensa. Es hat einen größeren Körper und kann stärkere Pflanzen- und Giftangriffe einsetzen."
+        },
+        "Sarzenia": {
+            image: "./assets/sprites/71.png",
+            sound: "./assets/cries/71.ogg",
+            description: "Sarzenia ist die letzte Entwicklungsstufe von Knofensa. Es hat einen großen Körper und kann mächtige Pflanzen- und Giftangriffe einsetzen."
+        },
+        "Tentacha": {
+            image: "./assets/sprites/72.png",
+            sound: "./assets/cries/72.ogg",
+            description: "Tentacha ist ein Wasser- und Gift-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Aquaknarre und Giftstachel einsetzen."
+        },
+        "Tentoxa": {
+            image: "./assets/sprites/73.png",
+            sound: "./assets/cries/73.ogg",
+            description: "Tentoxa ist die Weiterentwicklung von Tentacha. Es hat einen größeren Körper und kann stärkere Wasser- und Giftangriffe einsetzen."
+        },
+        "Kleinstein": {
+            image: "./assets/sprites/74.png",
+            sound: "./assets/cries/74.ogg",
+            description: "Kleinstein ist ein Gestein- und Boden-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Tackle und Steinwurf einsetzen."
+        },
+        "Georok": {
+            image: "./assets/sprites/75.png",
+            sound: "./assets/cries/75.ogg",
+            description: "Georok ist die Weiterentwicklung von Kleinstein. Es hat einen größeren Körper und kann stärkere Gestein- und Bodenangriffe einsetzen."
+        },
+        "Geowaz": {
+            image: "./assets/sprites/76.png",
+            sound: "./assets/cries/76.ogg",
+            description: "Geowaz ist die letzte Entwicklungsstufe von Kleinstein. Es hat einen großen Körper und kann mächtige Gestein- und Bodenangriffe einsetzen."
+        },
+        "Ponita": {
+            image: "./assets/sprites/77.png",
+            sound: "./assets/cries/77.ogg",
+            description: "Ponita ist ein Feuer-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Tackle und Flammenwurf einsetzen."
+        },
+        "Gallopa": {
+            image: "./assets/sprites/78.png",
+            sound: "./assets/cries/78.ogg",
+            description: "Gallopa ist die Weiterentwicklung von Ponita. Es hat einen größeren Körper und kann stärkere Feuerangriffe einsetzen."
+        },
+        "Flegmon": {
+            image: "./assets/sprites/79.png",
+            sound: "./assets/cries/79.ogg",
+            description: "Flegmon ist ein Wasser- und Psycho-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Aquaknarre und Konfusion einsetzen."
+        },
+        "Lahmus": {
+            image: "./assets/sprites/80.png",
+            sound: "./assets/cries/80.ogg",
+            description: "Lahmus ist die Weiterentwicklung von Flegmon. Es hat einen größeren Körper und kann stärkere Wasser- und Psychoangriffe einsetzen."
+        },
+        "Magnetilo": {
+            image: "./assets/sprites/81.png",
+            sound: "./assets/cries/81.ogg",
+            description: "Magnetilo ist ein Elektro- und Stahl-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Tackle und Donnerblitz einsetzen."
+        },
+        "Magneton": {
+            image: "./assets/sprites/82.png",
+            sound: "./assets/cries/82.ogg",
+            description: "Magneton ist die Weiterentwicklung von Magnetilo. Es hat einen größeren Körper und kann stärkere Elektro- und Stahlangriffe einsetzen."
+        },
+        "Porenta'": {
+            image: "./assets/sprites/83.png",
+            sound: "./assets/cries/83.ogg",
+            description: "Porenta' ist ein Normal- und Flug-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Flügelschlag einsetzen."
+        },
+        "Dodu": {
+            image: "./assets/sprites/84.png",
+            sound: "./assets/cries/84.ogg",
+            description: "Dodu ist ein Normal- und Flug-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Flügelschlag einsetzen."
+        },
+        "Dodri": {
+            image: "./assets/sprites/85.png",
+            sound: "./assets/cries/85.ogg",
+            description: "Dodri ist die Weiterentwicklung von Dodu. Es hat einen größeren Körper und kann stärkere Normal- und Flugangriffe einsetzen."
+        },
+        "Jurob": {
+            image: "./assets/sprites/86.png",
+            sound: "./assets/cries/86.ogg",
+            description: "Jurob ist ein Wasser- und Eis-Pokémon der ersten Generation. Es hat einen weißen Körper und kann Aquaknarre und Eisstrahl einsetzen."
+        },
+        "Jugong": {
+            image: "./assets/sprites/87.png",
+            sound: "./assets/cries/87.ogg",
+            description: "Jugong ist die Weiterentwicklung von Jurob. Es hat einen größeren Körper und kann stärkere Wasser- und Eisangriffe einsetzen."
+        },
+        "Sleima": {
+            image: "./assets/sprites/88.png",
+            sound: "./assets/cries/88.ogg",
+            description: "Sleima ist ein Gift-Pokémon der ersten Generation. Es hat einen lila Körper und kann Tackle und Giftstachel einsetzen."
+        },
+        "Sleimok": {
+            image: "./assets/sprites/89.png",
+            sound: "./assets/cries/89.ogg",
+            description: "Sleimok ist die Weiterentwicklung von Sleima. Es hat einen größeren Körper und kann stärkere Giftangriffe einsetzen."
+        },
+        "Muschas": {
+            image: "./assets/sprites/90.png",
+            sound: "./assets/cries/90.ogg",
+            description: "Muschas ist ein Wasser-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Aquaknarre und Eisstrahl einsetzen."
+        },
+        "Austos": {
+            image: "./assets/sprites/91.png",
+            sound: "./assets/cries/91.ogg",
+            description: "Austos ist die Weiterentwicklung von Muschas. Es hat einen größeren Körper und kann stärkere Wasser- und Eisangriffe einsetzen."
+        },
+        "Nebulak": {
+            image: "./assets/sprites/92.png",
+            sound: "./assets/cries/92.ogg",
+            description: "Nebulak ist ein Geist- und Gift-Pokémon der ersten Generation. Es hat einen lila Körper und kann Tackle und Hypnose einsetzen."
+        },
+        "Alpollo": {
+            image: "./assets/sprites/93.png",
+            sound: "./assets/cries/93.ogg",
+            description: "Alpollo ist die Weiterentwicklung von Nebulak. Es hat einen größeren Körper und kann stärkere Geist- und Giftangriffe einsetzen."
+        },
+        "Gengar": {
+            image: "./assets/sprites/94.png",
+            sound: "./assets/cries/94.ogg",
+            description: "Gengar ist die letzte Entwicklungsstufe von Nebulak. Es hat einen großen Körper und kann mächtige Geist- und Giftangriffe einsetzen."
+        },
+        "Onix": {
+            image: "./assets/sprites/95.png",
+            sound: "./assets/cries/95.ogg",
+            description: "Onix ist ein Gestein- und Boden-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Tackle und Steinwurf einsetzen."
+        },
+        "Traumato": {
+            image: "./assets/sprites/96.png",
+            sound: "./assets/cries/96.ogg",
+            description: "Traumato ist ein Psycho-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Tackle und Hypnose einsetzen."
+        },
+        "Hypno": {
+            image: "./assets/sprites/97.png",
+            sound: "./assets/cries/97.ogg",
+            description: "Hypno ist die Weiterentwicklung von Traumato. Es hat einen größeren Körper und kann stärkere Psychoangriffe einsetzen."
+        },
+        "Krabby": {
+            image: "./assets/sprites/98.png",
+            sound: "./assets/cries/98.ogg",
+            description: "Krabby ist ein Wasser-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Kingler": {
+            image: "./assets/sprites/99.png",
+            sound: "./assets/cries/99.ogg",
+            description: "Kingler ist die Weiterentwicklung von Krabby. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Voltobal": {
+            image: "./assets/sprites/100.png",
+            sound: "./assets/cries/100.ogg",
+            description: "Voltobal ist ein Elektro-Pokémon der ersten Generation. Es hat einen roten Körper und kann Tackle und Donnerblitz einsetzen."
+        },
+        "Lektrobal": {
+            image: "./assets/sprites/101.png",
+            sound: "./assets/cries/101.ogg",
+            description: "Lektrobal ist die Weiterentwicklung von Voltobal. Es hat einen größeren Körper und kann stärkere Elektroangriffe einsetzen."
+        },
+        "Owei": {
+            image: "./assets/sprites/102.png",
+            sound: "./assets/cries/102.ogg",
+            description: "Owei ist ein Pflanzen- und Psycho-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Tackle und Hypnose einsetzen."
+        },
+        "Kokowei": {
+            image: "./assets/sprites/103.png",
+            sound: "./assets/cries/103.ogg",
+            description: "Kokowei ist die Weiterentwicklung von Owei. Es hat einen größeren Körper und kann stärkere Pflanzen- und Psychoangriffe einsetzen."
+        },
+        "Tragosso": {
+            image: "./assets/sprites/104.png",
+            sound: "./assets/cries/104.ogg",
+            description: "Tragosso ist ein Boden-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Knochenkeule einsetzen."
+        },
+        "Knogga": {
+            image: "./assets/sprites/105.png",
+            sound: "./assets/cries/105.ogg",
+            description: "Knogga ist die Weiterentwicklung von Tragosso. Es hat einen größeren Körper und kann stärkere Bodenangriffe einsetzen."
+        },
+        "Kicklee": {
+            image: "./assets/sprites/106.png",
+            sound: "./assets/cries/106.ogg",
+            description: "Kicklee ist ein Kampf-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Fußkick einsetzen."
+        },
+        "Nockchan": {
+            image: "./assets/sprites/107.png",
+            sound: "./assets/cries/107.ogg",
+            description: "Nockchan ist ein Kampf-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Boxhieb einsetzen."
+        },
+        "Schlurp": {
+            image: "./assets/sprites/108.png",
+            sound: "./assets/cries/108.ogg",
+            description: "Schlurp ist ein Normal-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Tackle und Zungenschlag einsetzen."
+        },
+        "Smogon": {
+            image: "./assets/sprites/109.png",
+            sound: "./assets/cries/109.ogg",
+            description: "Smogon ist ein Gift-Pokémon der ersten Generation. Es hat einen lila Körper und kann Tackle und Giftstachel einsetzen."
+        },
+        "Smogmog": {
+            image: "./assets/sprites/110.png",
+            sound: "./assets/cries/110.ogg",
+            description: "Smogmog ist die Weiterentwicklung von Smogon. Es hat einen größeren Körper und kann stärkere Giftangriffe einsetzen."
+        },
+        "Rihorn": {
+            image: "./assets/sprites/111.png",
+            sound: "./assets/cries/111.ogg",
+            description: "Rihorn ist ein Boden- und Gestein-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Tackle und Hornattacke einsetzen."
+        },
+        "Rizeros": {
+            image: "./assets/sprites/112.png",
+            sound: "./assets/cries/112.ogg",
+            description: "Rizeros ist die Weiterentwicklung von Rihorn. Es hat einen größeren Körper und kann stärkere Boden- und Gesteinsangriffe einsetzen."
+        },
+        "Chaneira": {
+            image: "./assets/sprites/113.png",
+            sound: "./assets/cries/113.ogg",
+            description: "Chaneira ist ein Normal-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Tackle und Weichei einsetzen."
+        },
+        "Tangela": {
+            image: "./assets/sprites/114.png",
+            sound: "./assets/cries/114.ogg",
+            description: "Tangela ist ein Pflanzen-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Rankenhieb einsetzen."
+        },
+        "Kangama": {
+            image: "./assets/sprites/115.png",
+            sound: "./assets/cries/115.ogg",
+            description: "Kangama ist ein Normal-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Kängurukick einsetzen."
+        },
+        "Seeper": {
+            image: "./assets/sprites/116.png",
+            sound: "./assets/cries/116.ogg",
+            description: "Seeper ist ein Wasser-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Seemon": {
+            image: "./assets/sprites/117.png",
+            sound: "./assets/cries/117.ogg",
+            description: "Seemon ist die Weiterentwicklung von Seeper. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Goldini": {
+            image: "./assets/sprites/118.png",
+            sound: "./assets/cries/118.ogg",
+            description: "Goldini ist ein Wasser-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Golking": {
+            image: "./assets/sprites/119.png",
+            sound: "./assets/cries/119.ogg",
+            description: "Golking ist die Weiterentwicklung von Goldini. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Sterndu": {
+            image: "./assets/sprites/120.png",
+            sound: "./assets/cries/120.ogg",
+            description: "Sterndu ist ein Wasser-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Starmie": {
+            image: "./assets/sprites/121.png",
+            sound: "./assets/cries/121.ogg",
+            description: "Starmie ist die Weiterentwicklung von Sterndu. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Pantimos": {
+            image: "./assets/sprites/122.png",
+            sound: "./assets/cries/122.ogg",
+            description: "Pantimos ist ein Psycho- und Fee-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Tackle und Konfusion einsetzen."
+        },
+        "Sichlor": {
+            image: "./assets/sprites/123.png",
+            sound: "./assets/cries/123.ogg",
+            description: "Sichlor ist ein Käfer- und Flug-Pokémon der ersten Generation. Es hat einen grünen Körper und kann Tackle und Flügelschlag einsetzen."
+        },
+        "Rossana": {
+            image: "./assets/sprites/124.png",
+            sound: "./assets/cries/124.ogg",
+            description: "Rossana ist ein Eis- und Psycho-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Tackle und Eisstrahl einsetzen."
+        },
+        "Elektek": {
+            image: "./assets/sprites/125.png",
+            sound: "./assets/cries/125.ogg",
+            description: "Elektek ist ein Elektro-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Tackle und Donnerblitz einsetzen."
+        },
+        "Magmar": {
+            image: "./assets/sprites/126.png",
+            sound: "./assets/cries/126.ogg",
+            description: "Magmar ist ein Feuer-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Tackle und Flammenwurf einsetzen."
+        },
+        "Pinsir": {
+            image: "./assets/sprites/127.png",
+            sound: "./assets/cries/127.ogg",
+            description: "Pinsir ist ein Käfer-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Zangenangriff einsetzen."
+        },
+        "Tauros": {
+            image: "./assets/sprites/128.png",
+            sound: "./assets/cries/128.ogg",
+            description: "Tauros ist ein Normal-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Hornattacke einsetzen."
+        },
+        "Karpador": {
+            image: "./assets/sprites/129.png",
+            sound: "./assets/cries/129.ogg",
+            description: "Karpador ist ein Wasser-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Tackle und Platscher einsetzen."
+        },
+        "Garados": {
+            image: "./assets/sprites/130.png",
+            sound: "./assets/cries/130.ogg",
+            description: "Garados ist die Weiterentwicklung von Karpador. Es hat einen größeren Körper und kann stärkere Wasserangriffe einsetzen."
+        },
+        "Lapras": {
+            image: "./assets/sprites/131.png",
+            sound: "./assets/cries/131.ogg",
+            description: "Lapras ist ein Wasser- und Eis-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Eisstrahl einsetzen."
+        },
+        "Ditto": {
+            image: "./assets/sprites/132.png",
+            sound: "./assets/cries/132.ogg",
+            description: "Ditto ist ein Normal-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Tackle und Verwandlung einsetzen."
+        },
+        "Evoli": {
+            image: "./assets/sprites/133.png",
+            sound: "./assets/cries/133.ogg",
+            description: "Evoli ist ein Normal-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Ruckzuckhieb einsetzen."
+        },
+        "Aquana": {
+            image: "./assets/sprites/134.png",
+            sound: "./assets/cries/134.ogg",
+            description: "Aquana ist die Wasser-Entwicklung von Evoli. Es hat einen blauen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Blitza": {
+            image: "./assets/sprites/135.png",
+            sound: "./assets/cries/135.ogg",
+            description: "Blitza ist die Elektro-Entwicklung von Evoli. Es hat einen gelben Körper und kann Tackle und Donnerblitz einsetzen."
+        },
+        "Flamara": {
+            image: "./assets/sprites/136.png",
+            sound: "./assets/cries/136.ogg",
+            description: "Flamara ist die Feuer-Entwicklung von Evoli. Es hat einen orangefarbenen Körper und kann Tackle und Flammenwurf einsetzen."
+        },
+        "Porygon": {
+            image: "./assets/sprites/137.png",
+            sound: "./assets/cries/137.ogg",
+            description: "Porygon ist ein Normal-Pokémon der ersten Generation. Es hat einen rosa Körper und kann Tackle und Konversion einsetzen."
+        },
+        "Amonitas": {
+            image: "./assets/sprites/138.png",
+            sound: "./assets/cries/138.ogg",
+            description: "Amonitas ist ein Gestein- und Wasser-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Amoroso": {
+            image: "./assets/sprites/139.png",
+            sound: "./assets/cries/139.ogg",
+            description: "Amoroso ist die Weiterentwicklung von Amonitas. Es hat einen größeren Körper und kann stärkere Gestein- und Wasserangriffe einsetzen."
+        },
+        "Kabuto": {
+            image: "./assets/sprites/140.png",
+            sound: "./assets/cries/140.ogg",
+            description: "Kabuto ist ein Gestein- und Wasser-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Tackle und Aquaknarre einsetzen."
+        },
+        "Kabutops": {
+            image: "./assets/sprites/141.png",
+            sound: "./assets/cries/141.ogg",
+            description: "Kabutops ist die Weiterentwicklung von Kabuto. Es hat einen größeren Körper und kann stärkere Gestein- und Wasserangriffe einsetzen."
+        },
+        "Aerodactyl": {
+            image: "./assets/sprites/142.png",
+            sound: "./assets/cries/142.ogg",
+            description: "Aerodactyl ist ein Gestein- und Flug-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Tackle und Flügelschlag einsetzen."
+        },
+        "Relaxo": {
+            image: "./assets/sprites/143.png",
+            sound: "./assets/cries/143.ogg",
+            description: "Relaxo ist ein Normal-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Erholung einsetzen."
+        },
+        "Arktos": {
+            image: "./assets/sprites/144.png",
+            sound: "./assets/cries/144.ogg",
+            description: "Arktos ist ein Eis- und Flug-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Eisstrahl einsetzen."
+        },
+        "Zapdos": {
+            image: "./assets/sprites/145.png",
+            sound: "./assets/cries/145.ogg",
+            description: "Zapdos ist ein Elektro- und Flug-Pokémon der ersten Generation. Es hat einen gelben Körper und kann Tackle und Donnerblitz einsetzen."
+        },
+        "Lavados": {
+            image: "./assets/sprites/146.png",
+            sound: "./assets/cries/146.ogg",
+            description: "Lavados ist ein Feuer- und Flug-Pokémon der ersten Generation. Es hat einen orangefarbenen Körper und kann Tackle und Flammenwurf einsetzen."
+        },
+        "Dratini": {
+            image: "./assets/sprites/147.png",
+            sound: "./assets/cries/147.ogg",
+            description: "Dratini ist ein Drachen-Pokémon der ersten Generation. Es hat einen blauen Körper und kann Tackle und Wickel einsetzen."
+        },
+        "Dragonir": {
+            image: "./assets/sprites/148.png",
+            sound: "./assets/cries/148.ogg",
+            description: "Dragonir ist die Weiterentwicklung von Dratini. Es hat einen größeren Körper und kann stärkere Drachenangriffe einsetzen."
+        },
+        "Dragoran": {
+            image: "./assets/sprites/149.png",
+            sound: "./assets/cries/149.ogg",
+            description: "Dragoran ist die letzte Entwicklungsstufe von Dratini. Es hat einen großen Körper und kann mächtige Drachenangriffe einsetzen."
+        },
+        "Mewtu": {
+            image: "./assets/sprites/150.png",
+            sound: "./assets/cries/150.ogg",
+            description: "Mewtu ist ein Psycho-Pokémon der ersten Generation. Es hat einen grauen Körper und kann Tackle und Psychokinese einsetzen."
+        },
+        "Mew": {
+            image: "./assets/sprites/151.png",
+            sound: "./assets/cries/151.ogg",
+            description: "Mew ist ein mysteriöses Pokémon der ersten Generation. Es hat die Fähigkeit, sich unsichtbar zu machen und kann jede Attacke erlernen."
+        }
+        };
+
+ // Funktion zum Vorlesen des Textes
+ function speakText(text) {
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = 'de-DE'; // Sprache auf Deutsch setzen
+        window.speechSynthesis.speak(speech);
+    }
+
+    // Event-Listener für die Sidebar-Links
+    document.querySelectorAll('.pokemon-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Verhindert das Standardverhalten des Links (Seitenwechsel)
+            event.preventDefault();
+            
+            // Holen des Pokémon-Namens aus dem "data-pokemon"-Attribut
+            const pokemonName = event.currentTarget.getAttribute('data-pokemon');
+            
+            // Holen der Bild-URL und Beschreibung aus dem pokemonData-Objekt
+            const pokemon = pokemonData[pokemonName];
+
+            // Setzen des Bildes und der Beschreibung im Detailbereich
+            document.getElementById('pokemon-image').src = pokemon.image;
+            document.getElementById('pokemon-description').textContent = pokemon.description;
+
+            // Abspielen des Pokémon-Sounds
+            const audio = new Audio(pokemon.sound);
+            audio.play();
+
+            // Vorlesen der Pokémon-Beschreibung nach 3 Sekunden
+            setTimeout(() => {
+                speakText(pokemon.description);
+            }, 2000);
+        });
+    });
+</script>
+
+</body>
+</html>

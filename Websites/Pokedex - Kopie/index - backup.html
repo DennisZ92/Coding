@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #f4f4f4;
+    }
+    p{
+        display:none;
+    }
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: -1;
+    }
+    .background img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .logo {
+        position: absolute;
+        top: 1%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+    .logo img {
+        max-width: 60%;
+        min-width: 300px;
+        height: auto;
+    }
+    .microphone {
+        position: fixed;
+        /* top: 10px;
+        left: 0px; */
+        background-color: transparent;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index:1;
+    }
+    .microphone img {
+        width: 50px;
+    }
+    .sidebar {
+      width: 200px;
+      height: 100vh;
+      padding: 10px;
+      background-color: rgb(73, 191, 250);
+      overflow-y: scroll;
+      position:fixed;
+      right: 0;
+      top: 0;
+    }
+    
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      margin-bottom: 5px;
+      background-color: #2b8cec;
+      border-radius: 50px 10px 10px 50px;
+    }
+    
+    .sidebar a img {
+      margin-right: 10px;
+      image-rendering: pixelated;
+    }
+    
+    .sidebar a:hover {
+      background-color: rgb(13, 89, 169);
+      color: white;
+      /* padding: 20px; */
+    }
+
+    #pokemon-detail {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        z-index: 1;
+    }
+    #pokemon-image {
+        width: 300px;
+        margin-bottom: 20px;
+        image-rendering: pixelated;
+    }
+    @media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: 35vh; /* Set a fixed height for the sidebar */
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* grid-template-rows: repeat(2, 1fr); */
+        gap: 10px;
+        padding: 10px;
+        overflow-y: auto;
+        border: #f4f4f4;
+        border-radius: 4% 4% 0% 0%;
+    }
+
+    .sidebar a {
+        margin: 0;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .sidebar a img {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    body {
+        overflow-y: auto; /* Allow body to scroll */
+    }
+    .background{
+        top: -110px;
+    }
+    #pokemon-detail {
+        top: 40%; /* Adjust this value to move the Pokémon image up */
+    }
+}
+  </style>
+</head>
+<body>
+    <div class="background">
+        <img src="./assets/images/5818333.webp" alt="Pokedex Hintergrund" class="background">
+    </div>
+    <div class="logo">
+        <img src="./assets/images/logo.png" alt="Pokedex Logo">
+    </div>
+    <button class="microphone" id="microphone-button">
+        <img src="./assets/images/microphone.png" alt="Mikrofon">
+    </button>
+    <div class="sidebar">
+        <a href="#" class="pokemon-link" data-pokemon="Bisasam"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Bisaknosp"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Bisaflor"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Glumanda"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Glutexo"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Glurak"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Schiggy"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Schillok"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Turtok"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Raupy"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Safcon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/11.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Smettbo"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Hornliu"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Kokuna"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Bibor"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Taubsi"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Tauboga"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/17.png" alt=""> </a>
+        <a href="#" class="pokemon-link" data-pokemon="Tauboss"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png" alt=""> </a>
+    </div>
+
+    <div id="pokemon-detail">
+        <img id="pokemon-image" src="" alt="Pokémon Bild">
+        <p id="pokemon-description"></p>
+    </div>
+
+    <script>
+        // Pokémon-Daten für die ersten 151 Pokémon
+        const pokemonData = {
+        "Bisasam": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            sound: "./assets/cries/1.ogg",
+            description: "Bisasam ist ein Pflanzen- und Gift-Pokémon der ersten Generation. Es hat die Fähigkeit, Pflanzen durch den Saft in seinem Rücken zu wachsen."
+        },
+        "Bisaknosp": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
+            sound: "./assets/cries/2.ogg",
+            description: "Bisaknosp ist die Weiterentwicklung von Bisasam und entwickelt sich zu Bisaflor. Es hat bereits einen größeren Blütenansatz auf seinem Rücken."
+        },
+        "Bisaflor": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+            sound: "./assets/cries/3.ogg",
+            description: "Bisaflor ist die letzte Entwicklungsstufe von Bisasam. Mit einem riesigen Pflanzenanteil auf seinem Rücken kann es starke Pflanzenangriffe ausführen."
+        },
+        "Glumanda": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+            sound: "./assets/cries/4.ogg",
+            description: "Glumanda ist ein Feuer-Pokémon der ersten Generation. Es hat eine Flamme auf seinem Schwanz, die seine Lebenskraft anzeigt."
+        },
+        "Glutexo": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png",
+            sound: "./assets/cries/5.ogg",
+            description: "Glutexo ist die Weiterentwicklung von Glumanda. Es hat stärkere Feuerangriffe und eine größere Flamme auf seinem Schwanz."
+        },
+        "Glurak": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+            sound: "./assets/cries/6.ogg",
+            description: "Glurak ist die letzte Entwicklungsstufe von Glumanda. Es kann fliegen und feuert mächtige Feuerangriffe aus seinem Maul."
+        },
+        "Schiggy": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+            sound: "./assets/cries/7.ogg",
+            description: "Schiggy ist ein Wasser-Pokémon der ersten Generation. Es kann Wasser aus seinem Mund spritzen und hat eine harte Schale zum Schutz."
+        },
+        "Schillok": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
+            sound: "./assets/cries/8.ogg",
+            description: "Schillok ist die Weiterentwicklung von Schiggy. Es hat stärkere Wasserangriffe und eine größere Schale."
+        },
+        "Turtok": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
+            sound: "./assets/cries/9.ogg",
+            description: "Turtok ist die letzte Entwicklungsstufe von Schiggy. Es hat mächtige Wasserkanonen auf seinem Rücken, die es zum Angriff einsetzt."
+        },
+        "Raupy": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png",
+            sound: "./assets/cries/10.ogg",
+            description: "Raupy ist ein Käfer-Pokémon der ersten Generation. Es hat einen grünen Körper und eine rote Fühler."
+        },
+        "Safcon": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/11.png",
+            sound: "./assets/cries/11.ogg",
+            description: "Safcon ist die Weiterentwicklung von Raupy. Es hat eine harte Schale, die es vor Angriffen schützt."
+        },
+        "Smettbo": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png",
+            sound: "./assets/cries/12.ogg",
+            description: "Smettbo ist die letzte Entwicklungsstufe von Raupy. Es kann Puder aus seinen Flügeln streuen, um Gegner zu verwirren."
+        },
+        "Hornliu": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png",
+            sound: "./assets/cries/13.ogg",
+            description: "Hornliu ist ein Käfer- und Gift-Pokémon der ersten Generation. Es hat einen stacheligen Körper und kann Giftstachel einsetzen."
+        },
+        "Kokuna": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png",
+            sound: "./assets/cries/14.ogg",
+            description: "Kokuna ist die Weiterentwicklung von Hornliu. Es hat eine harte Schale, die es vor Angriffen schützt."
+        },
+        "Bibor": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png",
+            sound: "./assets/cries/15.ogg",
+            description: "Bibor ist die letzte Entwicklungsstufe von Hornliu. Es hat große Stacheln an seinen Armen und kann Giftstachel einsetzen."
+        },
+        "Taubsi": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png",
+            sound: "./assets/cries/16.ogg",
+            description: "Taubsi ist ein Normal- und Flug-Pokémon der ersten Generation. Es hat einen braunen Körper und kann Sandwirbel einsetzen."
+        },
+        "Tauboga": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/17.png",
+            sound: "./assets/cries/17.ogg",
+            description: "Tauboga ist die Weiterentwicklung von Taubsi. Es hat größere Flügel und kann stärkere Flugangriffe einsetzen."
+        },
+        "Tauboss": {
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png",
+            sound: "./assets/cries/18.ogg",
+            description: "Tauboss ist die letzte Entwicklungsstufe von Taubsi. Es hat große Flügel und kann mächtige Flugangriffe einsetzen."
+        },
+        };
+
+  // Funktion zum Vorlesen des Textes mit natürlicherer Stimme
+  function speakText(text) {
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = 'de-DE'; // Sprache auf Deutsch setzen
+
+        // Wartezeit, um sicherzustellen, dass Stimmen geladen sind
+        setTimeout(() => {
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => voice.lang === 'de-DE' && voice.name.includes('Microsoft')) || 
+                                   voices.find(voice => voice.lang === 'de-DE' && voice.name.includes('Google'));
+
+            if (preferredVoice) {
+                speech.voice = preferredVoice;
+            }
+
+            window.speechSynthesis.speak(speech);
+        }, 500);
+    }
+
+    // Stimmen müssen manchmal erst geladen werden
+    window.speechSynthesis.onvoiceschanged = () => speakText('');
+
+    // Event-Listener für die Sidebar-Links
+    document.querySelectorAll('.pokemon-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Verhindert das Standardverhalten des Links (Seitenwechsel)
+            event.preventDefault();
+            
+            // Holen des Pokémon-Namens aus dem "data-pokemon"-Attribut
+            const pokemonName = event.currentTarget.getAttribute('data-pokemon');
+            
+            // Holen der Bild-URL und Beschreibung aus dem pokemonData-Objekt
+            const pokemon = pokemonData[pokemonName];
+
+            // Setzen des Bildes und der Beschreibung im Detailbereich
+            document.getElementById('pokemon-image').src = pokemon.image;
+            document.getElementById('pokemon-description').textContent = pokemon.description;
+
+            // Abspielen des Pokémon-Sounds
+            const audio = new Audio(pokemon.sound);
+            audio.play();
+
+            // Vorlesen der Pokémon-Beschreibung nach 2 Sekunden
+            setTimeout(() => {
+                speakText(pokemon.description);
+            }, 2000);
+        });
+    });
+
+    // Sprachsuche-Funktionalität
+    const microphoneButton = document.getElementById('microphone-button');
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'de-DE';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        microphoneButton.addEventListener('click', () => {
+            recognition.start();
+        });
+
+        recognition.addEventListener('result', (event) => {
+            const spokenText = event.results[0][0].transcript;
+            const pokemonName = Object.keys(pokemonData).find(name => name.toLowerCase() === spokenText.toLowerCase());
+
+            if (pokemonName) {
+                const pokemon = pokemonData[pokemonName];
+
+                // Setzen des Bildes und der Beschreibung im Detailbereich
+                document.getElementById('pokemon-image').src = pokemon.image;
+                document.getElementById('pokemon-description').textContent = pokemon.description;
+
+                // Abspielen des Pokémon-Sounds
+                const audio = new Audio(pokemon.sound);
+                audio.play();
+
+                // Vorlesen der Pokémon-Beschreibung nach 2 Sekunden
+                setTimeout(() => {
+                    speakText(pokemon.description);
+                }, 2000);
+            } else {
+                speakText('Pokémon nicht gefunden. Bitte versuchen Sie es erneut.');
+            }
+        });
+
+        recognition.addEventListener('error', (event) => {
+            speakText('Fehler bei der Spracherkennung. Bitte versuchen Sie es erneut.');
+        });
+</script>
+</body>
+</html>
